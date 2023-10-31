@@ -24,6 +24,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import android.template.data.MyModelRepository
 import android.template.data.DefaultMyModelRepository
+import android.template.data.network.api.SpoonacularApi
+import com.example.recipeonboardingproject.common.Constants
+import dagger.Provides
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,6 +36,19 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface DataModule {
 
+    @Provides
+    @Singleton
+    fun provideSpoonacularApi(): SpoonacularApi {
+        return Retrofit.Builder()
+            .baseUrl(Constants.SPOONACULAR_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SpoonacularApi::class.java)
+    }
+
+
+
+    //TODO Clean later
     @Singleton
     @Binds
     fun bindsMyModelRepository(
